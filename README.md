@@ -6,7 +6,7 @@ gradethink is a CLI app used to track assessment grades written in C. This will 
 
 ### Overview
 
-All operations using gradethink will be through the terminal by executing a `gradethink` program. This software should be compatible on unix-like operating systems.
+All operations using gradethink will be through the terminal by executing a `gradethink` program. This software should be compatible on unix-like operating systems. 
 
 ### Course
 
