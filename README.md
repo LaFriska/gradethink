@@ -19,11 +19,16 @@ All components of a given course are stored as line-separated and comma-separate
 **Name:** `COMP1234.txt`
 **Contents:**
 ```
-Assignment 1, 0.25, 0.87
-Assignment 2, 0.25, NA
+Assignment 1, 25%, 0.87
+Assignment 2, 0.20, NA
+Quiz 1, 0.05, 28/30
 Final Exam, 0.50, NA 
 ```
 
 ### Displaying Courses
 
-gradethink will be able to display courses statuses using a pretty-print layout. This can be done through `gradethink status <name>`.
+gradethink will be able to display courses statuses using a pretty-print layout. This can be done through `gradethink status <name>`. Several derived attributes will also be displayed. These may include a current weighted average, and also the weighted average needed in the `NA` components to achieve various grade bands (pass, credit, distinction, high distinction etc). It is possible that a verbose mode will be added to display these additional information, by adding the `-v` flag. 
+
+### Hypothetical Grades
+
+Grades can be set without mutating the course configuration file. This can be done via `gradethink tempset <course_name> <attr_name> <mark>`.
