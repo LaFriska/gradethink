@@ -1,6 +1,7 @@
-#ifndef HEADER_PARSER
-#define HEADER_PARSER
+#ifndef PARSER_H
+#define PARSER_H 
 
+#include "structures.h"
 
 
 #endif

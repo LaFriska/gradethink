@@ -1,17 +1,22 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "parser.h"
 
 /**
 * Reads the content of the file line by line, each line. Each 
 * line will be parsed separately by the parser.
 */ 
-void parse_file(char *file_path){
+CourseList *parse_file(char *file_path){
     
     FILE *file = fopen(file_path, "r");
     if(file == NULL){
         printf("Error: Cannot read file.\n");
         exit(EXIT_FAILURE);
     }
+    
+    CourseList *courseList = NULL;
+    CourseList *current = courseList; 
+    
     
     char *line = NULL;
     size_t len = 0;
@@ -20,7 +25,7 @@ void parse_file(char *file_path){
         printf("%s", line);
     }
     free(line);
-    return;
+    return courseList;
 }
 
 /**
@@ -34,7 +39,7 @@ int main(int argc, char *argv[]){
     }
     
     char *file_path = argv[1];
-    parse_file(file_path);
+    CourseList *list = parse_file(file_path);
     
     return 0;
 }
