@@ -7,7 +7,7 @@
 * how well the student did in this component. 
 */
 struct Component{
-    char name[72]; //A name, at-most 72 characters, checks should be 64 as a safeguard.
+    char *name;
     float weight; //Total weighting, must be in [0, 1].
     float result; //Result, must be [0, 1] ∪ {-1}. It is -1 if the result is not yet ready (displayed as N/A)
 };
@@ -24,8 +24,9 @@ struct ComponentList{
 * A course is a ComponentList with a name.
 */
 struct Course{
-    char name[72];
-    struct ComponentList headComponent;
+    char *name;
+    struct ComponentList *head;
+    struct ComponentList *tail;
 }; 
 
 /**
@@ -36,9 +37,34 @@ struct CourseList{
     struct CourseList *next;
 };
 
+/**
+* A profile is simply contains a pointer to the start and end of
+* a course list.
+*/
+struct Profile{
+    struct CourseList *head;
+    struct CourseList *tail;
+};
+
 typedef struct Component Component;
 typedef struct ComponentList ComponentList;
 typedef struct Course Course;
 typedef struct CourseList CourseList;
+typedef struct Profile Profile;
+
+/***
+* Frees the profile. Wrapper around free_course_list.
+*/
+void free_profile(Profile *profile);
+
+/**
+* Frees the course list. Wrapper around free_component_list.
+*/
+void free_course_list(CourseList *courselist);
+
+/**
+* Frees the allocated memory for a ComponentList.
+*/
+void free_component_list(ComponentList *components);
 
 #endif

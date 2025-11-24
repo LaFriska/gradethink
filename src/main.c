@@ -6,7 +6,7 @@
 * Reads the content of the file line by line, each line. Each 
 * line will be parsed separately by the parser.
 */ 
-CourseList *parse_file(char *file_path){
+Profile *parse_file(char *file_path){
     
     FILE *file = fopen(file_path, "r");
     if(file == NULL){
@@ -14,9 +14,9 @@ CourseList *parse_file(char *file_path){
         exit(EXIT_FAILURE);
     }
     
-    CourseList *courseList = NULL;
-    CourseList *current = courseList; 
-    
+    Profile *profile = malloc(sizeof(Profile));
+    profile->head = NULL;
+    profile->tail = NULL;
     
     char *line = NULL;
     size_t len = 0;
@@ -25,7 +25,7 @@ CourseList *parse_file(char *file_path){
         printf("%s", line);
     }
     free(line);
-    return courseList;
+    return profile;
 }
 
 /**
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
     }
     
     char *file_path = argv[1];
-    CourseList *list = parse_file(file_path);
+    Profile *list = parse_file(file_path);
     
     return 0;
 }
