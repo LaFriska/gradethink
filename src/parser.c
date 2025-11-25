@@ -70,21 +70,26 @@ float parse_float(const char *s, float default_denom){ //TODO add rounding for p
     strncpy(buf, s, len);
     buf[len] = '\0';
     char *endptr;
+    float val;
     
     if(buf[len-1] == '%'){
         buf[len-1] = '\0';
-        long val = strtol(buf, &endptr, 10);
-        if(*endptr != '\0' || val < 0 || val > 100){
+        val = strtof(buf, &endptr);
+        if(*endptr != '\0'){
             return -1;
         }
-        return ((float) val) / 100;
+        float res = val / 100;
+        if(res < 0 || res > 1){
+            return -1;
+        }
+        return res;
     }
     
     //Try to parse as a single long
-    long val = strtol(buf, &endptr, 10);
+    val = strtof(buf, &endptr);
     
-    if(*endptr != '\0'){ //Succeeds
-        float res = ((float) val)/((float) default_denom);
+    if(*endptr == '\0'){ //Succeeds
+        float res = val / default_denom;
         if(res < 0 || res > 1){
             return -1;
         }
@@ -97,18 +102,18 @@ float parse_float(const char *s, float default_denom){ //TODO add rounding for p
         while(buf[i] != '/') i++;
         buf[i] = '\0';
         char *denom_str = &buf[i+1];
-        val = strtol(buf, &endptr, 10);
+        val = strtof(buf, &endptr);
         if(*endptr != '\0'){
             return -1;      //Invalid numerator
         }
-        long denom = strtol(denom_str, &endptr, 10);
+        float denom = strtof(denom_str, &endptr);
         if(*endptr != '\0'){    
             return -1;      //Invalid denominator
         }
         if(denom == 0){
             return -1;      //Division by 0
         }
-        float res = (float) val/(float) denom;
+        float res = val / denom;
         if(res < 0 || res > 1){
             return -1;      //out of bounds
         }
@@ -172,20 +177,17 @@ int parse_component(char *component, int len, Profile *profile){
     
     if(token == NULL){ //no results available
         node->component.result = -1;
-    }
-    
-    else if(!strip(token)){
+    }else if(!strip(token)){
         printf("Error: Cannot parse the following component: \"%s\". Component result is blank.\n", component);
         exit(1);
+    }else{
+        float result = parse_float(token, weighting * 100);
+        if(result < 0){
+            printf("Error: Cannot parse the following component: \"%s\". Result \"%s\" cannot be parsed into float.\n", component, token);
+            exit(1);
+        }
+        node->component.result = result;
     }
-    
-    float result = parse_float(token, weighting * 100);
-    if(result < 0){
-        printf("Error: Cannot parse the following component: \"%s\". Result \"%s\" cannot be parsed into float.\n", component, token);
-        exit(1);
-    }
-    
-    node->component.result = result;
     
     Course *course = &profile->tail->course;
     

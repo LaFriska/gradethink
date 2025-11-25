@@ -1,8 +1,8 @@
 # Set of C compiler to gcc
 CC=gcc
-CFLAGS= -Wall -Wconversion -fsanitize=address
+CFLAGS= -Wall -Wconversion -g -fsanitize=address
 
-all: src/main.c src/parser.c src/structures.c
+all: src/main.o src/parser.o src/structures.o
 	$(CC) $(CFLAGS) $^ -o gradethink
 
 .PHONY: clean 
