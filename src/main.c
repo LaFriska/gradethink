@@ -22,7 +22,7 @@ Profile *parse_file(char *file_path){
     size_t len = 0;
     ssize_t read;
     while((read = getline(&line, &len, file)) != -1){
-        printf("%s", line);
+        parse_line(line, profile);
     }
     free(line);
     return profile;
@@ -39,7 +39,10 @@ int main(int argc, char *argv[]){
     }
     
     char *file_path = argv[1];
-    Profile *list = parse_file(file_path);
+    Profile *profile = parse_file(file_path);
     
+    //TODO
+    
+    free_profile(profile);
     return 0;
 }

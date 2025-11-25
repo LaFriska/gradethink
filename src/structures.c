@@ -1,5 +1,6 @@
 #include "structures.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void free_profile(Profile *profile){
     free_course_list(profile->head);
@@ -27,4 +28,23 @@ void free_component_list(ComponentList *components){
         free(curr);
         curr = next; 
     }
+}
+
+CourseList *new_course_list(){
+    CourseList *res = malloc(sizeof(CourseList));
+    if(res == NULL){
+        printf("Error: Cannot allocate memory\n");
+        exit(1);
+    }
+    res->course.head = NULL;
+    res->course.name = NULL;
+    res->course.tail = NULL;
+    res->next = NULL;
+    return res;
+}
+
+ComponentList *new_component_list(){
+    ComponentList *res = malloc(sizeof(ComponentList));
+    res->component.name = NULL;
+    res->next = NULL;
 }

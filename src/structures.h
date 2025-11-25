@@ -67,4 +67,14 @@ void free_course_list(CourseList *courselist);
 */
 void free_component_list(ComponentList *components);
 
+/** 
+* Instantiates a new CourseList node.
+*/
+CourseList *new_course_list();
+
+/**
+* Instantiates a new ComponentList node.
+*/
+ComponentList *new_component_list();
+
 #endif
