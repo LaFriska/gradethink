@@ -47,4 +47,5 @@ ComponentList *new_component_list(){
     ComponentList *res = malloc(sizeof(ComponentList));
     res->component.name = NULL;
     res->next = NULL;
+    return res;
 }

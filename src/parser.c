@@ -44,12 +44,12 @@ int strip(char *s){
             return 0;
         }
     }
-    while (s[j++] = s[i++]);
+    while ((s[j++] = s[i++]));
     j -= 2;
   	while(s[j] == ' ') j--;
   	j++;
   	s[j] = '\0';
-    return 0;
+    return 1;
 }
 
 /**
@@ -64,8 +64,8 @@ int strip(char *s){
 *                      as the first argument to this function.
 * @return a float representing the input string, or -1 if the input is invalid.
 */
-float parse_float(const char *s, int default_denom){ //TODO add rounding for precision errors.
-    int len = strlen(s);
+float parse_float(const char *s, float default_denom){ //TODO add rounding for precision errors.
+    size_t len = strlen(s);
     char buf[len+1];
     strncpy(buf, s, len);
     buf[len] = '\0';
@@ -134,35 +134,35 @@ int parse_component(char *component, int len, Profile *profile){
     char *token = strtok_r(saveptr, sep, &saveptr);
     
     if(token == NULL){
-        printf("Error: Cannot parse the following component: \"%s\". Component name not found.", component);
+        printf("Error: Cannot parse the following component: \"%s\". Component name not found.\n", component);
         exit(1);
     }
     
     if(!strip(token)){
-        printf("Error: Cannot parse the following component: \"%s\". Component name is blank.", component);
+        printf("Error: Cannot parse the following component: \"%s\". Component name is blank.\n", component);
         exit(1);
     }
     
     ComponentList *node = new_component_list();
-    const int namelen = strlen(token);
+    const size_t namelen = strlen(token);
     char *name = malloc(namelen + 1);
     node->component.name = name;
     
     token = strtok_r(saveptr, sep, &saveptr); // Next argument, total weighting. 
     
     if(token == NULL){
-        printf("Error: Cannot parse the following component: \"%s\". Component weighting not found.", component);
+        printf("Error: Cannot parse the following component: \"%s\". Component weighting not found.\n", component);
         exit(1);
     }
     
     if(!strip(token)){
-        printf("Error: Cannot parse the following component: \"%s\". Component weighting is blank.", component);
+        printf("Error: Cannot parse the following component: \"%s\". Component weighting is blank.\n", component);
         exit(1);
     }
     
     float weighting = parse_float(token, 100);
     if(weighting < 0){
-        printf("Error: Cannot parse the following component: \"%s\". Weighting \"%s\" cannot be parsed into float.", component, token);
+        printf("Error: Cannot parse the following component: \"%s\". Weighting \"%s\" cannot be parsed into float.\n", component, token);
         exit(1);
     }
     
@@ -175,13 +175,13 @@ int parse_component(char *component, int len, Profile *profile){
     }
     
     else if(!strip(token)){
-        printf("Error: Cannot parse the following component: \"%s\". Component result is blank.", component);
+        printf("Error: Cannot parse the following component: \"%s\". Component result is blank.\n", component);
         exit(1);
     }
     
     float result = parse_float(token, weighting * 100);
     if(result < 0){
-        printf("Error: Cannot parse the following component: \"%s\". Result \"%s\" cannot be parsed into float.", component, token);
+        printf("Error: Cannot parse the following component: \"%s\". Result \"%s\" cannot be parsed into float.\n", component, token);
         exit(1);
     }
     
@@ -201,7 +201,7 @@ int parse_component(char *component, int len, Profile *profile){
 
 
 int parse_line(const char *line, Profile *profile){
-    int len = strlen(line);
+    int len = (int) strlen(line);
     int i = 0;
     int j = len-1;
     
@@ -223,12 +223,12 @@ int parse_line(const char *line, Profile *profile){
     if(*(line+j) == ':'){
         //Copies the name
         int namelen = j-i;
-        char *name = malloc(namelen+1);
+        char *name = malloc((unsigned) namelen+1);
         if(name == NULL){
             printf("Error: Cannot allocate memory\n");
             exit(1);
         }
-        memcpy(name, line+i, namelen);
+        memcpy(name, line+i, (unsigned) namelen);
         *(name+namelen) = '\0';
         add_course(name, profile);
         return 0;
@@ -237,7 +237,7 @@ int parse_line(const char *line, Profile *profile){
     //At this point, we safely assume the string represents a component. 
     int clen = j+1-i;
     char component[clen+1];
-    memcpy(component, line+i, clen);
+    memcpy(component, line+i, (unsigned) clen);
     component[clen] = '\0';
     
     return parse_component(component, clen, profile);
