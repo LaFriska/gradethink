@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "parser.h"
+#include "display.h"
 
 /**
 * Reads the content of the file line by line, each line. Each 
@@ -41,7 +42,7 @@ int main(int argc, char *argv[]){
     char *file_path = argv[1];
     Profile *profile = parse_file(file_path);
     
-    //TODO
+    render(profile);
     
     free_profile(profile);
     return 0;

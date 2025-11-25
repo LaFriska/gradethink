@@ -2,7 +2,7 @@
 CC=gcc
 CFLAGS= -Wall -Wconversion -g -fsanitize=address
 
-all: src/main.o src/parser.o src/structures.o
+all: src/main.o src/parser.o src/structures.o src/display.o
 	$(CC) $(CFLAGS) $^ -o gradethink
 
 .PHONY: clean 
