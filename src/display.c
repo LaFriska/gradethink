@@ -1,4 +1,5 @@
 #include "display.h"
+#include "structures.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -160,6 +161,51 @@ void render_course_name(char *name){
     printf("\n");
 }
 
+void print_empty_line(){
+    customise_rgn(WHITE_RGB, GRAY_RGB);
+    print_fixed_len("", 0, TOTAL_WIDTH);
+    reset();
+    printf("\n");
+}
+
+/**
+* Gets running average of a course.
+* @return running average, or -1 if undefined.
+*/
+float get_running_average(CourseList *courselist){
+    float cumulative_weight = 0;
+    float cumulative_result = 0;
+    ComponentList *curr = courselist->course.head;
+    while(curr){
+        float res = curr->component.result;
+        float weight = curr->component.weight;
+        if(res >= 0){
+            cumulative_result += res * weight;
+            cumulative_weight += weight;
+        }
+        curr = curr->next;
+    }
+    if(cumulative_weight == 0){ //no components are available
+        return -1;
+    }
+    return cumulative_result / cumulative_weight;
+}
+
+void print_running_average(CourseList *courselist){
+    float avg = round_2d(get_running_average(courselist) * 100);
+    char buf[64];
+    snprintf(buf, 64, "Running Average: %.2f%%", avg);
+    customise_rgn(WHITE_RGB, GRAY_RGB);
+    print_fixed_len(buf, strlen(buf), TOTAL_WIDTH);
+    reset();
+    printf("\n");
+}
+
+void render_stats(CourseList *courselist){
+    print_empty_line();
+    print_running_average(courselist);
+}
+
 void render(Profile *profile){
     CourseList *curr = profile->head;
     while(curr){
@@ -171,7 +217,7 @@ void render(Profile *profile){
             render_component(&comp->component);
             comp = comp->next;
         }
-        printf("\n");
+        render_stats(curr);
         curr = curr->next;
     }
 }
