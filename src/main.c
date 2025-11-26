@@ -42,6 +42,7 @@ int main(int argc, char *argv[]){
     char *file_path = argv[1];
     Profile *profile = parse_file(file_path);
     
+    verify(profile);
     render(profile);
     
     free_profile(profile);

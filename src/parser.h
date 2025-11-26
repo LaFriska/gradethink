@@ -12,4 +12,11 @@
 */
 int parse_line(const char *line, Profile *profile);
 
+/**
+* Verifies that the profile is valid. This function
+* returns if and only if it is valid, otherwise prints an error message
+* and exits.
+*/
+void verify(Profile *profile);
+
 #endif

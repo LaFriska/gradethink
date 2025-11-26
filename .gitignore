@@ -1,4 +1,4 @@
 gradethink
 src/*.o
-grades.txt
+*.txt
 gradethink.dSYM

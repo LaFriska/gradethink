@@ -32,6 +32,7 @@
 #define NAME_WIDTH 32
 #define WEIGHT_WIDTH 16
 #define RESULT_WIDTH 16
+#define TOTAL_WIDTH 64
 
 #define HIGH_HD "201"
 #define HD "46"

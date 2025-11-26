@@ -247,3 +247,21 @@ int parse_line(const char *line, Profile *profile){
     return parse_component(component, clen, profile);
     
 }
+
+void verify(Profile *profile){
+    CourseList *csl = profile->head;
+    while(csl){
+        ComponentList *cpl = csl->course.head;
+        float weightCumulative = 0;
+        while(cpl){
+            weightCumulative += cpl->component.weight;
+            cpl = cpl->next;
+        }
+        
+        if(weightCumulative != 1){
+            printf("Error: Weights of components under \"%s\" does not add up to 100%%.\n", csl->course.name);
+            exit(1);
+        }
+        csl = csl->next;
+    }
+}

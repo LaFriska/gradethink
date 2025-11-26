@@ -40,6 +40,32 @@ void reset(){
     printf("%s", RESET);
 }
 
+/***
+* Centers a text, and place it in a result buffer.
+* It is src must be a pointer to an array of size+1 in length.
+* @return -1 on fail, 0 on success.
+*/
+int centered_text(char *dst, char *src, size_t size){
+    size_t len = strlen(src);
+    if(len > size){
+        return -1;
+    }
+    size_t rem = size - len;
+    size_t left;
+    size_t right;
+    if(rem % 2 == 1){
+        left = (rem-1)/2 + 1;
+        right = (rem-1)/2;
+    }
+    left = rem/2;
+    right = rem/2;
+    memset(dst, ' ', left);
+    strncpy(dst+left, src, len);
+    memset(dst+left+len, ' ', right);
+    src[size] = '\0';
+    return 0;
+}
+
 /**
 * Associates a grade band of the result to a specific
 * colour.
@@ -117,8 +143,11 @@ void render_component(const Component *component){
 }
 
 void render_course_name(char *name){
+    
+    char centered[TOTAL_WIDTH + 1];
+    centered_text(centered, name, TOTAL_WIDTH);
     customise(BOLD, DEFAULT);
-    printf("%s", name);
+    printf("%s", centered);
     reset();
     printf("\n");
 }
