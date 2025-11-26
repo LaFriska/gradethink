@@ -29,6 +29,20 @@
 #define NOBOLD "0"
 #define UNDERLINE "4"
 
+#define NAME_WIDTH 32
+#define WEIGHT_WIDTH 16
+#define RESULT_WIDTH 16
+
+#define HIGH_HD "201"
+#define HD "46"
+#define D "51"
+#define C "21"
+#define P "208"
+#define F "196"
+#define NA "247"
+
+#define NA_STRING "N/A"
+
 /**
 * Given a profile, renders it onto the screen.
 */

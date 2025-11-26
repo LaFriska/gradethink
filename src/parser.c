@@ -151,6 +151,8 @@ int parse_component(char *component, int len, Profile *profile){
     ComponentList *node = new_component_list();
     const size_t namelen = strlen(token);
     char *name = malloc(namelen + 1);
+    strncpy(name, token, namelen);
+    name[namelen] = '\0';
     node->component.name = name;
     
     token = strtok_r(saveptr, sep, &saveptr); // Next argument, total weighting. 
