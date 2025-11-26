@@ -29,8 +29,8 @@ void customise_bg(char *mode, char *fg, char *bg){
 * Customises the terminal using ANSI escape codes, using
 * RGB. This does not work with bolded texts.
 */
-void customise_rgn(char *rgb){
-    printf("\x1b[38;5;%sm", rgb);
+void customise_rgn(char *rgb, char *bg){
+    printf("\x1b[38;5;%sm\x1b[48;5;%sm", rgb, bg);
 }
 
 /**
@@ -62,7 +62,7 @@ int centered_text(char *dst, char *src, size_t size){
     memset(dst, ' ', left);
     strncpy(dst+left, src, len);
     memset(dst+left+len, ' ', right);
-    src[size] = '\0';
+    dst[size] = '\0';
     return 0;
 }
 
@@ -116,7 +116,7 @@ float round_2d(float f){
 
 void render_component(const Component *component){
     char *colour = colour_from_grades(component->result);
-    customise_rgn(colour);
+    customise_rgn(colour, GRAY_RGB);
     
     print_fixed_len(component->name, strlen(component->name), NAME_WIDTH);
     float mult_weight = round_2d(component->weight * 100);
@@ -138,15 +138,23 @@ void render_component(const Component *component){
         print_fixed_len(buf, strlen(buf), RESULT_WIDTH);
     }
     
-    printf("\n");
     reset();
+    printf("\n");
+}
+
+void render_categories(){
+    customise_rgn(WHITE_RGB, GRAY_RGB);
+    print_fixed_len(NAME_STR, strlen(NAME_STR), NAME_WIDTH);
+    print_fixed_len(WEIGHT_STR, strlen(WEIGHT_STR), WEIGHT_WIDTH);
+    print_fixed_len(RESULT_STR, strlen(RESULT_STR), RESULT_WIDTH);
+    reset();
+    printf("\n");
 }
 
 void render_course_name(char *name){
-    
     char centered[TOTAL_WIDTH + 1];
     centered_text(centered, name, TOTAL_WIDTH);
-    customise(BOLD, DEFAULT);
+    customise_bg(BOLD, WHITE, BLACK_BG);
     printf("%s", centered);
     reset();
     printf("\n");
@@ -157,6 +165,7 @@ void render(Profile *profile){
     while(curr){
         char *name = curr->course.name;
         render_course_name(name);
+        render_categories();
         ComponentList *comp = curr->course.head;
         while(comp){
             render_component(&comp->component);

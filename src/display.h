@@ -41,8 +41,15 @@
 #define P "208"
 #define F "196"
 #define NA "247"
+#define BLACK_RGB "16"
+#define GRAY_RGB "233"
+#define WHITE_RGB "255"
 
 #define NA_STRING "N/A"
+
+#define NAME_STR "NAME"
+#define WEIGHT_STR "WEIGHTING"
+#define RESULT_STR "RESULT"
 
 /**
 * Given a profile, renders it onto the screen.
