@@ -33,3 +33,12 @@ Assignment 1, 15%, 96%
 Assignment 2, 15%, 98%
 Final Exam, 45%
 ```
+
+### Installation & Usage
+
+1. To install gradethink, make sure you are using a UNIX-like operating system (gradethink will most likely not work on Windows). 
+2. Then, you may either download the binaries that matches your instruction set, or clone this repository onto your local machine, and compile by running `make`.
+3. Move the binary into a path included in your `$PATH` variable.
+4. Create a text file for your grades, let's call it `example.txt`.
+5. Simply run `gradethink example.txt`.
+6. If you want to change the amount of mark you are aiming for, you may run `gradethink example.txt -a [percentage]`, where `[percentage]` is written as a percentage, fraction or raw number. For example, running `gradethink example.txt -a 90%` allows gradethink to speculate the amount of marks you need to reach 90%. 
