@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "parser.h"
 #include "display.h"
 
@@ -42,8 +43,27 @@ int main(int argc, char *argv[]){
     char *file_path = argv[1];
     Profile *profile = parse_file(file_path);
     
+    float aim = 0.8F;
+    
+    //parses the syntax ./gradethink [file] -a [percentage]
+    if(argc > 2){
+        if(strcmp(argv[2], "-a") == 0){
+            
+            if(argc < 4){
+                DASH_A_ERROR:
+                    printf("-a flag must be followed by a number, percentage, or fraction.\n");
+                    exit(EXIT_FAILURE);
+            }
+            
+            float newaim = parse_float(argv[3], 100);
+            if(newaim < 0) goto DASH_A_ERROR;
+            
+            aim = newaim;
+        }
+    }
+    
     verify(profile);
-    render(profile);
+    render(profile, aim);
     
     free_profile(profile);
     return 0;

@@ -53,7 +53,9 @@
 
 /**
 * Given a profile, renders it onto the screen.
+* @param profile the profile to render.
+* @param aim the gradeband to aim for.
 */
-void render(Profile *profile);
+void render(Profile *profile, float aim);
 
 #endif

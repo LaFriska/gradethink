@@ -169,8 +169,44 @@ void print_empty_line(){
 }
 
 /**
+* Returns the average needed in the uncompleted components such that the 
+* average in the end is exactly a specified floating value aim. 
+* @return the needed average, or -1 if it is impossible to reach it, or -2 if no
+*         uncompleted components exists.
+*/
+float get_needed_average(CourseList *courselist, float aim){
+    float c_w = 0; //Sum of weights of components whose result is not N/A
+    float c_r = 0; //Sum of result * weight of all components whose result is not N/A
+    float u_w = 0; //Sum of weights of components whose result is N/A. 
+    ComponentList *curr = courselist->course.head;
+    while(curr){
+        float result = curr->component.result;
+        float weight = curr->component.weight;
+        if(result >= 0){
+            c_w += weight;
+            c_r += result * weight;
+        }else{
+            u_w += weight;
+        }
+        curr = curr->next;
+    }
+    
+    if(u_w == 0){
+        return -2;
+    }
+    
+    float loss = c_w - c_r; //Total fraction of grades lost so far.
+    float opportunity = 1-loss; //The total fraction of grades we can still achieve
+    if(opportunity < aim){
+        return -1; //Opportunity not high enough
+    }
+    float epsilon = opportunity-aim; //Error margin, how much of our grade we can afford to lose before not meeting aim. 
+    return (u_w-epsilon)/u_w;
+}
+
+/**
 * Gets running average of a course.
-* @return running average, or -1 if undefined.
+* @return running average, -1 if undefined.
 */
 float get_running_average(CourseList *courselist){
     float cumulative_weight = 0;
@@ -192,7 +228,7 @@ float get_running_average(CourseList *courselist){
 }
 
 void print_running_average(CourseList *courselist){
-    float avg = round_2d(get_running_average(courselist) * 100);
+    float avg = round_2d( get_running_average(courselist) * 100);
     char buf[64];
     snprintf(buf, 64, "Running Average: %.2f%%", avg);
     customise_rgn(WHITE_RGB, GRAY_RGB);
@@ -201,12 +237,29 @@ void print_running_average(CourseList *courselist){
     printf("\n");
 }
 
-void render_stats(CourseList *courselist){
-    print_empty_line();
-    print_running_average(courselist);
+void print_needed_average(CourseList *courselist, float aim){
+    float needed_average = get_needed_average(courselist, aim);
+    char buf[64];
+    if(needed_average > 0){
+        snprintf(buf, 64, "Remaining average needed to achieve %.2f%% is %.2f%%.", round_2d(aim*100), round_2d(needed_average * 100));
+    }else if (needed_average == -1){
+        snprintf(buf, 64, "It is impossible to achieve %.2f%%.", round_2d(aim*100));
+    }else{
+        snprintf(buf, 64, "You've completed all assessments, good job!");
+    }
+    customise_rgn(WHITE_RGB, GRAY_RGB);
+    print_fixed_len(buf, strlen(buf), TOTAL_WIDTH);
+    reset();
+    printf("\n");
 }
 
-void render(Profile *profile){
+void render_stats(CourseList *courselist, float aim){
+    print_empty_line();
+    print_running_average(courselist);
+    print_needed_average(courselist, aim);
+}
+
+void render(Profile *profile, float aim){
     CourseList *curr = profile->head;
     while(curr){
         char *name = curr->course.name;
@@ -217,7 +270,7 @@ void render(Profile *profile){
             render_component(&comp->component);
             comp = comp->next;
         }
-        render_stats(curr);
+        render_stats(curr, aim);
         curr = curr->next;
     }
 }
