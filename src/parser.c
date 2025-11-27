@@ -247,7 +247,7 @@ void verify(Profile *profile){
         }
         
         if(weightCumulative != 1){
-            printf("Error: Weights of components under \"%s\" does not add up to 100%%.\n", csl->course.name);
+            printf("Error: Weights of components under \"%s\" does not add up to 100%%. It adds up to %f instead.\n", csl->course.name, weightCumulative);
             exit(1);
         }
         csl = csl->next;

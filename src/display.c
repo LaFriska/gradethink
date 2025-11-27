@@ -57,9 +57,10 @@ int centered_text(char *dst, char *src, size_t size){
     if(rem % 2 == 1){
         left = (rem-1)/2 + 1;
         right = (rem-1)/2;
+    }else{
+        left = rem/2;
+        right = rem/2;
     }
-    left = rem/2;
-    right = rem/2;
     memset(dst, ' ', left);
     strncpy(dst+left, src, len);
     memset(dst+left+len, ' ', right);
@@ -96,8 +97,8 @@ char *colour_from_grades(float res){
 
 void print_fixed_len(const char*str, size_t len, size_t actual_len){
     
-    if(actual_len < len){
-        actual_len = len;
+    if(actual_len - 2 < len){
+        len = actual_len - 2;
     }
     
     char buf[actual_len+1];
@@ -260,6 +261,7 @@ void render_stats(CourseList *courselist, float aim){
 }
 
 void render(Profile *profile, float aim){
+    printf("\n");
     CourseList *curr = profile->head;
     while(curr){
         char *name = curr->course.name;
@@ -271,6 +273,8 @@ void render(Profile *profile, float aim){
             comp = comp->next;
         }
         render_stats(curr, aim);
+        printf("\n");
         curr = curr->next;
     }
+    printf("\n");
 }
