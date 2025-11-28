@@ -202,7 +202,8 @@ float get_needed_average(CourseList *courselist, float aim){
         return -1; //Opportunity not high enough
     }
     float epsilon = opportunity-aim; //Error margin, how much of our grade we can afford to lose before not meeting aim. 
-    return (u_w-epsilon)/u_w;
+    float retval = (u_w-epsilon)/u_w;
+    return retval <= 0 ? 0 : retval; //Minimum is 0, we can't have negative exam scores
 }
 
 /**
@@ -241,7 +242,7 @@ void print_running_average(CourseList *courselist){
 void print_needed_average(CourseList *courselist, float aim){
     float needed_average = get_needed_average(courselist, aim);
     char buf[64];
-    if(needed_average > 0){
+    if(needed_average >= 0){
         snprintf(buf, 64, "Remaining average needed to achieve %.2f%% is %.2f%%.", round_2d(aim*100), round_2d(needed_average * 100));
     }else if (needed_average == -1){
         snprintf(buf, 64, "It is impossible to achieve %.2f%%.", round_2d(aim*100));
