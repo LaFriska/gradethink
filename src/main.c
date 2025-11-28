@@ -27,6 +27,7 @@ Profile *parse_file(char *file_path){
         parse_line(line, profile);
     }
     free(line);
+    fclose(file);
     return profile;
 }
 
