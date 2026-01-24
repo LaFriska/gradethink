@@ -1,6 +1,6 @@
 # gradethink
 
-This is a simple CLI tool for students to keep track of, and calculate grades. The current version is able to display names, total weighting and result of components of courses, and colour code them based on various grade bands. This tool is also capable of calculating the running average, and the remaining average that needs to be met in order to achieve a certain gradeband. 
+This is a simple CLI tool for students to keep track of, and calculate grades. The current version is able to display names, total weighting and result of components of courses, and colour code them based on various grade bands. This tool is also capable of calculating the running average, and the remaining average that needs to be met in order to achieve a certain gradeband.
 
 ![gradethink screenshot](image.png)
 
