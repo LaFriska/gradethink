@@ -3,7 +3,7 @@ CC=gcc
 CFLAGS= -Wall -Wconversion -g
 
 all: src/main.o src/parser.o src/structures.o src/display.o
-	$(CC) $(CFLAGS) $^ -o gradethink
+	$(CC) $(CFLAGS) $^ -o gradethink -lm
 
 .PHONY: clean 
 clean: 
